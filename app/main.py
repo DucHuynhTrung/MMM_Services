@@ -1,8 +1,12 @@
 from typing import Union
-
 from fastapi import FastAPI
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+
+
 
 app = FastAPI()
+
 
 @app.get("/")
 def read_root():

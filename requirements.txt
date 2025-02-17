@@ -1,0 +1,4 @@
+uvicorn
+fastapi
+pyTelegramBotAPI
+contextlib2
