@@ -1,18 +1,22 @@
-from typing import Union
 from fastapi import FastAPI
-from fastapi import FastAPI
-from contextlib import asynccontextmanager
-
-
+from .services import run_polling_telegram, stop_polling_telegram
+from .routes import route_home
 
 app = FastAPI()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.on_event("startup")
+async def startup_event():
+    run_polling_telegram()
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.on_event("shutdown")
+async def shutdown_event():
+    stop_polling_telegram()
+
+
+app.include_router(route_home)
+
+# @app.get("/items/{item_id}")
+# def read_item(item_id: int, q: Union[str, None] = None):
+#     return {"item_id": item_id, "q": q}
