@@ -1,4 +1,4 @@
-uvicorn
-fastapi
+fastapi[standard]
 pyTelegramBotAPI
 contextlib2
+pydantic
