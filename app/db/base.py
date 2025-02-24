@@ -1,11 +1,19 @@
-import mysql.connector
+import mysql.connector, os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def connect():
+    host = os.getenv('HOST')
+    user = os.getenv('USER')
+    password = os.getenv('PASS')
+    database = os.getenv('DATABASE')
+
     return mysql.connector.connect(
-        host="45.252.251.51",
-        user="ivizdbhn_sa",
-        password="TrungDuc1231998",
-        database="ivizdbhn_MMM"
+        host=host,
+        user=user,
+        password=password,
+        database=database
     )
 
 
