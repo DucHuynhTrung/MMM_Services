@@ -1,7 +1,9 @@
 import os, telebot
+from dotenv import load_dotenv
 from ..utils import handle_message_income, handle_message_expenditure, handle_message_credit
 
-TELEGRAM_BOT = telebot.TeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
+load_dotenv()
+TELEGRAM_BOT = telebot.TeleBot(os.getenv("TELEGRAM_BOT_TOKEN"))
 
 
 @TELEGRAM_BOT.message_handler(commands=['start'])
@@ -87,7 +89,7 @@ def handle_database(data: object):
 
 def run_polling_telegram():
   print("Starting bot")
-  TELEGRAM_BOT.polling(none_stop=True, interval=1)
+  TELEGRAM_BOT.polling(none_stop=False, interval=1)
 
 
 def stop_polling_telegram():

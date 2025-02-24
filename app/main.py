@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
 from .services import run_polling_telegram, stop_polling_telegram
 from .routes import route_home
 
