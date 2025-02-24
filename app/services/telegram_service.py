@@ -1,15 +1,17 @@
 import os, telebot
 from dotenv import load_dotenv
-from ..utils import handle_message_income, handle_message_expenditure, handle_message_credit
+from ..utils import handle_message_income, handle_message_expenditure
 
 load_dotenv()
-TELEGRAM_BOT = telebot.TeleBot(os.getenv("TELEGRAM_BOT_TOKEN"))
+TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN'))
 
 
 @TELEGRAM_BOT.message_handler(commands=['start'])
 def command_start(message):
   chat_id = message.chat.id
   first_name = message.chat.first_name
+  last_name = message.chat.last_name
+
   TELEGRAM_BOT.send_message(
       chat_id, f"Hi {first_name}, Tôi là bot hỗ trợ quản lý cho bạn.")
   ask_cash = TELEGRAM_BOT.send_message(
@@ -29,16 +31,6 @@ def command_chi(message):
 
 @TELEGRAM_BOT.message_handler(commands=['thu'])
 def command_thu(message):
-  pass
-
-
-@TELEGRAM_BOT.message_handler(commands=['tindung'])
-def command_tindung(message):
-  pass
-
-
-@TELEGRAM_BOT.message_handler(commands=['tratindung'])
-def command_tratindung(message):
   pass
 
 

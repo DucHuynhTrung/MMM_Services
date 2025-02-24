@@ -2,3 +2,4 @@ fastapi[standard]
 pyTelegramBotAPI
 contextlib2
 pydantic
+mysql-connector-python

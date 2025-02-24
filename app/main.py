@@ -8,12 +8,14 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
-    run_polling_telegram()
+    # run_polling_telegram()
+    pass
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    stop_polling_telegram()
+    # stop_polling_telegram()
+    pass
 
 
 app.include_router(route_home)
