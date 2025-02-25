@@ -1,4 +1,5 @@
-import os, telebot, asyncio
+import os, telebot, asyncio, concurrent.futures, threading
+from typing import Callable
 from datetime import datetime
 from dotenv import load_dotenv
 from ..utils import handle_message_income, handle_message_expenditure
@@ -10,12 +11,25 @@ TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN').__str__())
 
 
 @TELEGRAM_BOT.message_handler(commands=['start'])
-async def command_start(message):
+def command_start(message):
   current_datetime = datetime.now()
   user_visit = UserVisit(message.chat.id, message.chat.first_name, message.chat.last_name, current_datetime, current_datetime, 1, False)
-  result = await handle_user_visit_bot_async(user_visit)
+  
+  def run_async_task():
+    loop = asyncio.new_event_loop()  # Tạo event loop mới
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(handle_user_visit_bot_async(user_visit))
+    loop.close()
 
-  TELEGRAM_BOT.send_message(user_visit.ID, f"Hi {user_visit.FirstName}, Tôi là bot hỗ trợ quản lý cho bạn.")
+  thread = threading.Thread(target=run_async_task)
+  thread.start()
+
+  # loop = asyncio.get_running_loop()
+  # loop.run_in_executor(None, asyncio.run, handle_user_visit_bot_async(user_visit))
+
+  message_str: str = f"Hi {user_visit.FirstName}, Tôi là bot hỗ trợ quản lý cho bạn.\nCảm ơn bạn đã ghé thăm." #if result else f"Hi {user_visit.FirstName}, Tôi là bot hỗ trợ quản lý cho bạn."
+  
+  TELEGRAM_BOT.send_message(user_visit.ID, message_str)
   # gửi link đăng nhập bằng google
   
 
@@ -45,6 +59,8 @@ def all_message(message):
   user_message = message.text
 
   TELEGRAM_BOT.send_message(chat_id, user_message)
+
+
 
 
 def handle_start(message):

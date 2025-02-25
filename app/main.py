@@ -11,14 +11,14 @@ executor = ThreadPoolExecutor(max_workers=1)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     start_query_workers()
-    # loop = asyncio.get_running_loop()
-    # polling_task = loop.run_in_executor(executor, run_polling_telegram)
+    loop = asyncio.get_running_loop()
+    polling_task = loop.run_in_executor(executor, run_polling_telegram)
 
     yield  # Chạy server FastAPI
 
     # Khi server shutdown, dừng polling
-    # stop_polling_telegram()
-    # await polling_task  # Đợi polling dừng hoàn toàn
+    stop_polling_telegram()
+    await polling_task  # Đợi polling dừng hoàn toàn
 
 app = FastAPI(lifespan=lifespan)
 
