@@ -1,6 +1,7 @@
 import asyncio
+from datetime import datetime
 from fastapi import APIRouter
-from ..db import add_to_queue
+from ..db import handle_user_visit_bot_async
 from ..models import UserVisit
 
 
@@ -9,7 +10,8 @@ route_home = APIRouter()
 
 @route_home.get("/")
 async def home():
-    query = "select * from UserVisit"
-    result = await add_to_queue(query, class_convert=UserVisit, as_dict=True, return_result=True)
+    current_datetime = datetime.now()
+    user: UserVisit = UserVisit('7938711921', 'Đức', 'Trung', current_datetime, current_datetime, 1, False)
+    result = await handle_user_visit_bot_async(user)
     return {"message": "Welcome to the FastAPI API!",
             "result": result}

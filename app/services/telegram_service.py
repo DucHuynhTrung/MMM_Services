@@ -1,6 +1,8 @@
 import os, telebot, asyncio
+from datetime import datetime
 from dotenv import load_dotenv
 from ..utils import handle_message_income, handle_message_expenditure
+from ..models import UserVisit
 
 load_dotenv()
 TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN').__str__())
@@ -8,9 +10,13 @@ TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN').__str__())
 
 @TELEGRAM_BOT.message_handler(commands=['start'])
 def command_start(message):
+  current_datetime = datetime.now()
+  user_visit: UserVisit = UserVisit(message.chat.id, message.chat.first_name, message.chat.last_name, current_datetime, current_datetime, 1, False)
   chat_id = message.chat.id
   first_name = message.chat.first_name
   last_name = message.chat.last_name
+
+
 
   TELEGRAM_BOT.send_message(
       chat_id, f"Hi {first_name}, Tôi là bot hỗ trợ quản lý cho bạn.")
