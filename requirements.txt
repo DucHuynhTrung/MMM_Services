@@ -1,5 +1,5 @@
 fastapi[standard]
-pyTelegramBotAPI
+aiogram
 contextlib2
 pydantic
 mysql-connector-python
