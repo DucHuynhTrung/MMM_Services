@@ -3,3 +3,4 @@ pyTelegramBotAPI
 contextlib2
 pydantic
 mysql-connector-python
+pytest

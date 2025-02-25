@@ -1,22 +1,26 @@
+import asyncio, threading
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from .services import run_polling_telegram, stop_polling_telegram
 from .routes import route_home
+from .db import start_query_workers
 
-app = FastAPI()
+executor = ThreadPoolExecutor(max_workers=1)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    start_query_workers()
+    loop = asyncio.get_running_loop()
+    polling_task = loop.run_in_executor(executor, run_polling_telegram)
 
-@app.on_event("startup")
-async def startup_event():
-    # run_polling_telegram()
-    pass
+    yield  # Chạy server FastAPI
 
+    # Khi server shutdown, dừng polling
+    stop_polling_telegram()
+    await polling_task  # Đợi polling dừng hoàn toàn
 
-@app.on_event("shutdown")
-async def shutdown_event():
-    # stop_polling_telegram()
-    pass
-
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(route_home)
 

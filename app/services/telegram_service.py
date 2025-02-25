@@ -1,9 +1,9 @@
-import os, telebot
+import os, telebot, asyncio
 from dotenv import load_dotenv
 from ..utils import handle_message_income, handle_message_expenditure
 
 load_dotenv()
-TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN'))
+TELEGRAM_BOT = telebot.TeleBot(os.getenv('TELEGRAM_BOT_TOKEN').__str__())
 
 
 @TELEGRAM_BOT.message_handler(commands=['start'])
@@ -80,10 +80,13 @@ def handle_database(data: object):
 
 
 def run_polling_telegram():
-  print("Starting bot")
-  TELEGRAM_BOT.polling(none_stop=False, interval=1)
-
+  print("🔄 Bot Telegram đang chạy...")
+  TELEGRAM_BOT.infinity_polling(timeout=10, long_polling_timeout=5)
 
 def stop_polling_telegram():
-  print("Stoping bot")
+  print("🔴 Đang dừng bot...")
   TELEGRAM_BOT.stop_bot()
+  print("⏹ Bot Telegram đã dừng.")
+
+
+
