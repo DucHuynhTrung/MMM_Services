@@ -1,1 +1,0 @@
-from .handle_db_user_visit import handle_user_visit_bot_async

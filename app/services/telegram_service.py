@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from datetime import datetime
 from ..models import UserVisit
-from ..db.handler import handle_user_visit_bot_async
+from ..services import handle_user_visit_bot_async
 
 load_dotenv()
 

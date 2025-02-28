@@ -1,12 +1,10 @@
 import asyncio
 from fastapi import FastAPI
-# from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from .services import run_polling_telegram, stop_polling_telegram
-from .routes import route_home
+from .apis import route_home
 from .db import start_query_workers
 
-# executor = ThreadPoolExecutor(max_workers=1)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
